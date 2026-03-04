@@ -8,6 +8,7 @@ composer.lock
 # Development tools
 *.tmp
 *.log
+.phpcs-cache
 
 # OS generated files
 .DS_Store
