@@ -34,15 +34,17 @@ jobs:
             - name: Install Composer dependencies
               run: composer install --prefer-dist --no-progress --no-suggest
 
-            - name: Configure WordPress Coding Standards
-              run: vendor/bin/phpcs --config-set installed_paths vendor/wp-coding-standards/wpcs
-
-            - name: Run PHP CodeSniffer
+            - name: Run PHP syntax validation
               run: |
-                  # Run basic syntax validation
                   echo "🔍 Running PHP syntax validation..."
                   find . -name "*.php" -not -path "./vendor/*" -exec php -l {} \;
                   echo "✅ PHP syntax validation completed"
+
+            - name: Run PHP CodeSniffer
+              run: vendor/bin/phpcs
+
+            - name: Run PHPStan
+              run: vendor/bin/phpstan analyse --memory-limit=1G
 
     security-check:
         runs-on: ubuntu-latest
