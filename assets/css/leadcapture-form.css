@@ -1,0 +1,126 @@
+/**
+ * LeadCapture Form Plugin - Main Styles
+ *
+ * Main stylesheet for the LeadCapture Form plugin providing responsive
+ * form styling, loading animations, and error states.
+ *
+ * @package LeadCaptureForm
+ * @since 1.0.0
+ * @author Silver Assist
+ * @version 1.0.0
+ */
+
+/* ==========================================================================
+   Main Form Container Styles
+   ========================================================================== */
+
+.leadcapture-form-container {
+  width: 100%;
+  max-width: 100%;
+  margin: 0;
+  padding: 0;
+  position: relative;
+}
+
+.leadcapture-form-wrapper {
+  width: 100%;
+  position: relative;
+}
+
+/* Popup mode container is invisible (pixel script handles the popup). */
+.leadcapture-form-container.leadcapture-popup-mode {
+  display: none;
+}
+
+/* ==========================================================================
+   Loading Placeholder with Pulse Animation
+   ========================================================================== */
+
+.leadcapture-form-placeholder {
+  width: 100%;
+  min-height: 400px;
+  background-color: #f3f4f6;
+  border-radius: 8px;
+  position: relative;
+  overflow: hidden;
+  transition: min-height 0.3s ease;
+}
+
+/* Pulse animation effect. */
+.leadcapture-pulse-animation {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: linear-gradient(90deg, #f3f4f6 25%, #e5e7eb 50%, #f3f4f6 75%);
+  background-size: 200% 100%;
+  animation: leadcapture-pulse 1.5s infinite;
+}
+
+@keyframes leadcapture-pulse {
+  0% {
+    background-position: 200% 0;
+  }
+
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+/* ==========================================================================
+   Form Content Styles
+   ========================================================================== */
+
+.leadcapture-form-content {
+  width: 100%;
+}
+
+/* LeadCapture.io renders the form inside this class. */
+.leadcapture-form-content .leadforms-embd-form {
+  width: 100%;
+}
+
+/* ==========================================================================
+   Responsive Placeholder Heights
+   ========================================================================== */
+
+@media (max-width: 768px) {
+  .leadcapture-form-placeholder {
+    min-height: 300px;
+  }
+}
+
+@media (min-width: 769px) {
+  .leadcapture-form-placeholder {
+    min-height: 600px;
+  }
+}
+
+/* ==========================================================================
+   Error States
+   ========================================================================== */
+
+.leadcapture-form-error {
+  padding: 12px 16px;
+  background-color: #fef2f2;
+  border: 1px solid #fecaca;
+  border-radius: 6px;
+  color: #dc2626;
+  font-size: 14px;
+  margin: 16px 0;
+}
+
+/* ==========================================================================
+   Form Loading States
+   ========================================================================== */
+
+/* Hide placeholder when form is loaded. */
+.leadcapture-form-container.loaded .leadcapture-form-placeholder {
+  display: none;
+}
+
+/* Show form content when loaded. */
+.leadcapture-form-container.loaded .leadcapture-form-content {
+  display: block !important;
+}

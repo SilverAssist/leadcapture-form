@@ -1,0 +1,100 @@
+/**
+ * LeadCapture Form Block - Editor Styles
+ *
+ * Styles specifically for the Gutenberg block editor interface.
+ * These styles are only loaded in the admin editor, not on the frontend.
+ *
+ * @package LeadCaptureForm
+ * @since 1.0.0
+ * @author Silver Assist
+ * @version 1.0.0
+ */
+
+/* Block placeholder styling. */
+.wp-block-leadcapture-form-block .components-placeholder {
+  min-height: 120px;
+  border: 2px dashed #ddd;
+  transition: all 0.3s ease;
+}
+
+.wp-block-leadcapture-form-block .components-placeholder:hover {
+  border-color: #007cba;
+}
+
+/* Configured state styling. */
+.wp-block-leadcapture-form-block .components-placeholder.is-configured {
+  border-color: #00a32a;
+  background-color: #f6ffed;
+}
+
+.wp-block-leadcapture-form-block .components-placeholder.is-configured .components-placeholder__label {
+  color: #00a32a;
+  font-weight: 600;
+}
+
+/* Needs configuration state styling. */
+.wp-block-leadcapture-form-block .components-placeholder.needs-configuration {
+  border-color: #d63638;
+  background-color: #fff5f5;
+}
+
+.wp-block-leadcapture-form-block .components-placeholder.needs-configuration .components-placeholder__label {
+  color: #d63638;
+}
+
+.wp-block-leadcapture-form-block .components-placeholder.needs-configuration .components-placeholder__instructions {
+  color: #d63638;
+  font-weight: 500;
+}
+
+/* Icon styling. */
+.wp-block-leadcapture-form-block .components-placeholder__icon {
+  color: inherit;
+}
+
+/* Configuration summary styling. */
+.wp-block-leadcapture-form-block .components-placeholder div[style*="backgroundColor"] {
+  border-left: 3px solid #00a32a;
+}
+
+.wp-block-leadcapture-form-block .components-placeholder div[style*="backgroundColor"] strong {
+  color: #1e1e1e;
+}
+
+/* Help text styling. */
+.components-base-control__help {
+  font-size: 12px;
+  color: #757575;
+  margin-top: 8px;
+}
+
+/* Wide and full alignment support. */
+.wp-block-leadcapture-form-block.alignwide {
+  max-width: 1140px;
+}
+
+.wp-block-leadcapture-form-block.alignfull {
+  max-width: none;
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
+}
+
+/* Dark mode support. */
+@media (prefers-color-scheme: dark) {
+  .wp-block-leadcapture-form-block .components-placeholder {
+    border-color: #555;
+    background-color: #1e1e1e;
+    color: #f1f1f1;
+  }
+
+  .wp-block-leadcapture-form-block .components-placeholder.is-configured {
+    border-color: #4ab866;
+    background-color: #0f2114;
+  }
+
+  .wp-block-leadcapture-form-block .components-placeholder.needs-configuration {
+    border-color: #e65054;
+    background-color: #2d1b1b;
+  }
+}

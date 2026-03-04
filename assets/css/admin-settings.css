@@ -1,0 +1,192 @@
+/**
+ * LeadCapture Form - Admin Settings Styles
+ *
+ * Card-based design system for the plugin settings page.
+ *
+ * @package LeadCaptureForm
+ * @since 1.0.0
+ * @author Silver Assist
+ */
+
+/* CSS Variables */
+:root {
+    --leadcapture-color-primary: #2271b1;
+    --leadcapture-color-primary-hover: #135e96;
+    --leadcapture-color-success: #28a745;
+    --leadcapture-color-success-bg: #d4edda;
+    --leadcapture-color-success-text: #155724;
+    --leadcapture-color-success-border: #c3e6cb;
+    --leadcapture-color-error-bg: #f8d7da;
+    --leadcapture-color-error-text: #721c24;
+    --leadcapture-color-error-border: #f5c6cb;
+    --leadcapture-color-warning-bg: #fff3cd;
+    --leadcapture-color-warning-text: #856404;
+    --leadcapture-color-warning-border: #ffeaa7;
+    --leadcapture-color-text: #1d2327;
+    --leadcapture-color-text-secondary: #50575e;
+    --leadcapture-color-muted: #646970;
+    --leadcapture-color-border: #c3c4c7;
+    --leadcapture-color-border-light: #e0e0e0;
+    --leadcapture-color-border-lightest: #f0f0f0;
+    --leadcapture-color-bg: #f6f7f7;
+    --leadcapture-color-white: #fff;
+    --leadcapture-radius-sm: 3px;
+    --leadcapture-radius: 8px;
+    --leadcapture-radius-pill: 20px;
+    --leadcapture-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    --leadcapture-shadow-hover: 0 4px 12px rgba(0, 0, 0, 0.12);
+    --leadcapture-spacing-xs: 2px;
+    --leadcapture-spacing-sm: 4px;
+    --leadcapture-spacing-md: 8px;
+    --leadcapture-spacing-lg: 12px;
+    --leadcapture-spacing-xl: 16px;
+    --leadcapture-spacing-2xl: 20px;
+    --leadcapture-spacing-3xl: 24px;
+    --leadcapture-font-size-xs: 11px;
+    --leadcapture-font-size-sm: 12px;
+    --leadcapture-font-size-base: 13px;
+    --leadcapture-font-size-lg: 14px;
+    --leadcapture-font-size-xl: 16px;
+    --leadcapture-font-size-2xl: 18px;
+    --leadcapture-font-weight-medium: 500;
+    --leadcapture-font-weight-semibold: 600;
+    --leadcapture-font-weight-bold: 700;
+    --leadcapture-letter-spacing-tight: 0.3px;
+    --leadcapture-transition-fast: 0.2s;
+    --leadcapture-fluid-spacing: clamp(1rem, 2.5vw, 1.5rem);
+}
+
+/* Layout */
+.leadcapture-admin {
+    max-width: 1200px;
+}
+
+.leadcapture-settings-grid {
+    display: grid;
+    gap: var(--leadcapture-spacing-2xl);
+    margin-top: var(--leadcapture-spacing-3xl);
+    container-type: inline-size;
+}
+
+/* Card Base */
+.leadcapture-admin .status-card {
+    background: var(--leadcapture-color-white);
+    border: 1px solid var(--leadcapture-color-border);
+    border-radius: var(--leadcapture-radius);
+    padding: var(--leadcapture-fluid-spacing);
+    box-shadow: var(--leadcapture-shadow);
+    transition: box-shadow var(--leadcapture-transition-fast);
+}
+
+.leadcapture-admin .status-card:hover {
+    box-shadow: var(--leadcapture-shadow-hover);
+}
+
+/* Card Header */
+.leadcapture-admin .card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--leadcapture-spacing-md);
+    margin: 0 0 var(--leadcapture-spacing-lg);
+    padding: 0 0 var(--leadcapture-spacing-md);
+    border-bottom: 1px solid var(--leadcapture-color-border-light);
+}
+
+.leadcapture-admin .card-header .dashicons {
+    color: var(--leadcapture-color-primary);
+    font-size: 20px;
+    width: 20px;
+    height: 20px;
+}
+
+.leadcapture-admin .card-header h3 {
+    margin: 0;
+    font-size: var(--leadcapture-font-size-xl);
+    font-weight: var(--leadcapture-font-weight-semibold);
+    line-height: 1.3;
+    flex: 1;
+}
+
+/* Card Content */
+.leadcapture-admin .card-content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--leadcapture-spacing-md);
+}
+
+/* Feature List */
+.leadcapture-admin .feature-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.leadcapture-admin .feature-list li {
+    position: relative;
+    padding: var(--leadcapture-spacing-md) 0 var(--leadcapture-spacing-md) 24px;
+    border-bottom: 1px solid var(--leadcapture-color-border-lightest);
+    font-size: var(--leadcapture-font-size-base);
+    color: var(--leadcapture-color-text-secondary);
+}
+
+.leadcapture-admin .feature-list li:last-child {
+    border-bottom: none;
+}
+
+.leadcapture-admin .feature-list li::before {
+    content: "\f147";
+    font-family: dashicons;
+    position: absolute;
+    left: 0;
+    top: var(--leadcapture-spacing-md);
+    color: var(--leadcapture-color-success);
+    font-size: 16px;
+}
+
+/* Usage Section */
+.leadcapture-admin .card-content > h3 {
+    margin: var(--leadcapture-spacing-xl) 0 var(--leadcapture-spacing-md);
+    font-size: var(--leadcapture-font-size-lg);
+    font-weight: var(--leadcapture-font-weight-semibold);
+    color: var(--leadcapture-color-text);
+}
+
+.leadcapture-admin .card-content > h3:first-child {
+    margin-top: 0;
+}
+
+.leadcapture-admin .card-content p {
+    margin: var(--leadcapture-spacing-sm) 0;
+    font-size: var(--leadcapture-font-size-base);
+    color: var(--leadcapture-color-text-secondary);
+}
+
+.leadcapture-admin .card-content code {
+    display: block;
+    padding: 10px 14px;
+    background: var(--leadcapture-color-bg);
+    border: 1px solid var(--leadcapture-color-border-light);
+    border-radius: var(--leadcapture-radius-sm);
+    font-size: var(--leadcapture-font-size-sm);
+    word-break: break-all;
+    margin: var(--leadcapture-spacing-sm) 0;
+}
+
+.leadcapture-admin .card-content .description {
+    color: var(--leadcapture-color-muted);
+    font-style: italic;
+    font-size: var(--leadcapture-font-size-sm);
+}
+
+/* Responsive */
+@media screen and (max-width: 782px) {
+
+    .leadcapture-admin .status-card {
+        padding: var(--leadcapture-spacing-xl);
+    }
+
+    .leadcapture-admin .card-header h3 {
+        font-size: var(--leadcapture-font-size-lg);
+    }
+}

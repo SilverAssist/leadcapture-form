@@ -1,0 +1,44 @@
+# Composer
+/vendor/
+composer.lock
+
+# Node modules
+/node_modules/
+
+# Development tools
+*.tmp
+*.log
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# WordPress
+wp-config.php
+wp-content/uploads/
+wp-content/cache/
+wp-content/backup-db/
+wp-content/advanced-cache.php
+wp-content/wp-cache-config.php
+
+# Package builds
+/dist/
+/build/
+
+# Temporary files
+temp-package/
+temp-package.zip
+
+# Generated files (created by GitHub Actions)
+RELEASE-NOTES.md

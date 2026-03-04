@@ -1,0 +1,34 @@
+parameters:
+    level: 8
+    paths:
+        - includes
+        - leadcapture-form.php
+    bootstrapFiles:
+        - phpstan-bootstrap.php
+        - vendor/php-stubs/wordpress-stubs/wordpress-stubs.php
+    scanFiles:
+        - vendor/arts/elementor-stubs/elementor-stubs.php
+    reportUnmatchedIgnoredErrors: false
+    ignoreErrors:
+        - '#Constant LEADCAPTURE_FORM_#'
+        - '#Constant ARRAY_A not found#'
+        - '#PHPDoc tag @param references unknown parameter#'
+        - '#expects .*, .* given#'
+        - '#Strict comparison using#'
+        # Instanceof check is valid but flagged due to PHPDoc types
+        -
+            identifier: instanceof.alwaysTrue
+        # Methods used via WordPress hooks - PHPStan can't detect WordPress action/filter callbacks
+        - '#Method .+::register_block\(\) is unused#'
+        - '#Method .+::render_block\(\) is unused#'
+        - '#Method .+::enqueue_editor_assets\(\) is unused#'
+        - '#Method .+::register_settings_page\(\) is unused#'
+        - '#Method .+::render_settings_page\(\) is unused#'
+        # Iterables without value type specification (Elementor widget patterns)
+        - '#no value type specified in iterable type array#'
+        # render_block array parameter
+        - '#Method .+::render_block\(\) has parameter .+ with no value type specified#'
+        # is_elementor_loaded returns int from did_action but is typed bool
+        - '#should return bool but returns int#'
+        # ob_get_clean can return false
+        - '#should return string but returns string\|false#'

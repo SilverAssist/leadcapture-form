@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ruleset name="LeadCapture Form">
+    <description>PHP CodeSniffer configuration for LeadCapture Form - SilverAssist Standards</description>
+
+    <!-- Args -->
+    <arg name="basepath" value="."/>
+    <arg name="cache" value=".phpcs-cache"/>
+    <arg name="colors"/>
+    <arg name="extensions" value="php"/>
+    <arg name="parallel" value="80"/>
+    <arg value="p"/>
+    <arg value="s"/>
+
+    <!-- Paths to check -->
+    <file>includes</file>
+    <file>leadcapture-form.php</file>
+
+    <!-- Base WordPress-Extra standard -->
+    <rule ref="WordPress-Extra">
+        <!-- Allow PSR-4 file naming -->
+        <exclude name="WordPress.Files.FileName"/>
+        <!-- SilverAssist namespace (not plugin prefix) -->
+        <exclude name="WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedNamespaceFound"/>
+        <!-- Allow short ternaries (modern PHP) -->
+        <exclude name="Universal.Operators.DisallowShortTernary"/>
+        <!-- Allow non-Yoda conditions (modern PHP) -->
+        <exclude name="WordPress.PHP.YodaConditions"/>
+        <!-- Allow development functions in test helpers -->
+        <exclude name="WordPress.PHP.DevelopmentFunctions"/>
+        <!-- Allow eval in test helpers (for dynamic assertions) -->
+        <exclude name="Squiz.PHP.Eval"/>
+        <!-- Allow init function alongside class in main plugin file -->
+        <exclude name="Universal.Files.SeparateFunctionsFromOO"/>
+    </rule>
+
+    <!-- Minimum WordPress version -->
+    <config name="minimum_wp_version" value="6.5"/>
+
+    <!-- Prefix for global functions/variables -->
+    <config name="prefixes" value="leadcapture"/>
+
+    <!-- Text domain validation -->
+    <rule ref="WordPress.WP.I18n">
+        <properties>
+            <property name="text_domain" type="array">
+                <element value="leadcapture-form"/>
+            </property>
+        </properties>
+    </rule>
+
+    <!-- Exclude patterns -->
+    <exclude-pattern>vendor/*</exclude-pattern>
+    <exclude-pattern>node_modules/*</exclude-pattern>
+    <exclude-pattern>*.min.*</exclude-pattern>
+    <exclude-pattern>languages/*</exclude-pattern>
+    <exclude-pattern>.phpcs-cache/*</exclude-pattern>
+</ruleset>

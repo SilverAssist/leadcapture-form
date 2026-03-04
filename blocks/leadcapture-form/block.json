@@ -1,0 +1,66 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 2,
+  "name": "leadcapture/form-block",
+  "version": "1.0.0",
+  "title": "LeadCapture Form",
+  "category": "widgets",
+  "icon": "feedback",
+  "description": "Insert a LeadCapture.io form with embed or popup mode support.",
+  "keywords": [
+    "form",
+    "leadcapture",
+    "lead",
+    "capture",
+    "popup",
+    "embed"
+  ],
+  "supports": {
+    "html": false,
+    "align": ["wide", "full"],
+    "spacing": {
+      "margin": true,
+      "padding": true,
+      "__experimentalDefaultControls": {
+        "margin": false,
+        "padding": false
+      }
+    },
+    "color": {
+      "background": false,
+      "text": false,
+      "gradients": false
+    },
+    "typography": {
+      "fontSize": false,
+      "lineHeight": false
+    }
+  },
+  "attributes": {
+    "formToken": {
+      "type": "string",
+      "default": ""
+    },
+    "mode": {
+      "type": "string",
+      "default": "embed"
+    },
+    "triggerClass": {
+      "type": "string",
+      "default": ""
+    },
+    "height": {
+      "type": "string",
+      "default": ""
+    }
+  },
+  "textdomain": "leadcapture-form",
+  "editorScript": "file:./block.js",
+  "editorStyle": "file:./editor.css",
+  "example": {
+    "attributes": {
+      "formToken": "GLFT-DEMO-TOKEN",
+      "mode": "embed"
+    }
+  }
+}
