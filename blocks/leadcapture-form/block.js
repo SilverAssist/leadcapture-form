@@ -5,7 +5,7 @@
  * with embed and popup mode support.
  *
  * @file block.js
- * @version 1.0.0
+ * @version 1.0.1
  * @author Silver Assist
  * @requires wp.blocks, wp.element, wp.components, wp.i18n, wp.blockEditor
  * @since 1.0.0
