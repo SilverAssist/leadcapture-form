@@ -1,5 +1,4 @@
 <?php
-
 /**
  * LeadCapture Form Updater - GitHub Updates Integration
  *

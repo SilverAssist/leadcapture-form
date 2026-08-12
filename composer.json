@@ -17,6 +17,8 @@
     "silverassist/wp-settings-hub": "^1.2"
   },
   "require-dev": {
+    "silverassist/coding-standards": "^1.0",
+    "silverassist/wp-coding-standards": "^1.0",
     "dealerdirect/phpcodesniffer-composer-installer": "^1.0",
     "php-stubs/wordpress-stubs": "^6.6",
     "phpstan/phpstan": "^2.1",

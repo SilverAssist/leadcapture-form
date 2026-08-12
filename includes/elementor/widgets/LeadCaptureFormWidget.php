@@ -1,5 +1,4 @@
 <?php
-
 /**
  * LeadCapture Form Elementor Widget
  *

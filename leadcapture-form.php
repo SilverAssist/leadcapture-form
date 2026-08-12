@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Plugin Name: LeadCapture Form
  * Plugin URI: https://github.com/SilverAssist/leadcapture-form
@@ -441,7 +440,7 @@ class LeadCapture_Form {
 	 *
 	 * @since 1.0.0
 	 * @access private
-	 * @param array $data        The Elementor data array to search.
+	 * @param array  $data        The Elementor data array to search.
 	 * @param string $widget_name The widget name to search for.
 	 * @return bool True if widget is found, false otherwise.
 	 */

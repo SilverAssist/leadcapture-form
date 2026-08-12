@@ -1,5 +1,4 @@
 <?php
-
 /**
  * LeadCapture Form Gutenberg Block Handler
  *
