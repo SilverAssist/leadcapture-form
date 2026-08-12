@@ -13,6 +13,8 @@
 
 namespace LeadCaptureForm\Block;
 
+use SilverAssist\PluginKernel\Interfaces\LoadableInterface;
+
 // Prevent direct access.
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -27,7 +29,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @since 1.0.0
  * @package LeadCaptureForm\Block
  */
-class LeadCaptureFormBlock {
+class LeadCaptureFormBlock implements LoadableInterface {
 
 	/**
 	 * Single instance of the block handler.
@@ -43,7 +45,6 @@ class LeadCaptureFormBlock {
 	 * @since 1.0.0
 	 */
 	private function __construct() {
-		$this->init();
 	}
 
 	/**
@@ -70,7 +71,7 @@ class LeadCaptureFormBlock {
 	 * @since 1.0.0
 	 * @return LeadCaptureFormBlock The single instance.
 	 */
-	public static function get_instance(): LeadCaptureFormBlock {
+	public static function instance(): LeadCaptureFormBlock {
 		if ( self::$instance === null ) {
 			self::$instance = new self();
 		}
@@ -78,13 +79,45 @@ class LeadCaptureFormBlock {
 	}
 
 	/**
-	 * Initialize the block handler.
+	 * Deprecated alias for instance()
 	 *
+	 * @deprecated 1.1.0 Use instance() instead.
 	 * @since 1.0.0
+	 * @return LeadCaptureFormBlock
 	 */
-	private function init(): void {
+	public static function get_instance(): LeadCaptureFormBlock {
+		return self::instance();
+	}
+
+	/**
+	 * Initialize the component
+	 *
+	 * @since 1.1.0
+	 * @return void
+	 */
+	public function init(): void {
 		\add_action( 'init', array( $this, 'register_block' ) );
 		\add_action( 'enqueue_block_editor_assets', array( $this, 'enqueue_block_editor_assets' ) );
+	}
+
+	/**
+	 * Get the component loading priority
+	 *
+	 * @since 1.1.0
+	 * @return int
+	 */
+	public function get_priority(): int {
+		return 20;
+	}
+
+	/**
+	 * Determine if the component should be loaded
+	 *
+	 * @since 1.1.0
+	 * @return bool
+	 */
+	public function should_load(): bool {
+		return true;
 	}
 
 	/**
