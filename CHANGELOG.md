@@ -5,6 +5,53 @@ All notable changes to the LeadCapture Form Plugin will be documented in this fi
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.0] - 2026-08-12
+
+### Changed
+
+- **Plugin bootstrap**: the monolithic `LeadCapture_Form` class (previously
+  living directly in the main plugin file, handling hooks, shortcode
+  rendering, admin/updater init, and Elementor detection all in one place)
+  is replaced by `Plugin`, extending `silverassist/wp-plugin-kernel`'s
+  `AbstractPlugin`. Its responsibilities are decomposed into focused
+  `LoadableInterface` components:
+  - `ShortcodeHandler` (new) — `[leadcapture_form]` shortcode registration
+    and conditional asset enqueuing, extracted verbatim from the old class.
+  - `LeadCaptureFormBlock` — Gutenberg block, unchanged behavior.
+  - `Elementor\WidgetsLoader` — Elementor widget registration, unchanged
+    behavior. `should_load()` now reflects the same
+    `did_action('elementor/loaded')` check the old constructor used
+    internally, instead of a manual `require_once` guard in the main file.
+  - `LeadCaptureFormAdmin` — admin settings/updater UI. No longer
+    constructor-injected an `Updater` instance; reads it from
+    `Plugin::instance()->get_updater()` instead, same as the other
+    plugins in this rollout.
+- **Bootstrap hook**: the plugin now initializes on `init` instead of
+  `plugins_loaded`. `WidgetsLoader::should_load()` depends on
+  `did_action('elementor/loaded')`, and Elementor typically fires that
+  from its own `plugins_loaded` callback — evaluating the check during
+  this plugin's `plugins_loaded` callback would risk running before
+  Elementor announces itself, depending on plugin load order across a
+  site. By `init`, every plugin's `plugins_loaded` has already run. None
+  of this plugin's components need `plugins_loaded`-specific timing.
+- `includes/elementor/widgets/LeadCaptureFormWidget.php` now calls
+  `ShortcodeHandler::instance()->render_shortcode()` instead of the
+  removed `LeadCapture_Form::get_instance()->render_shortcode()`.
+
+### Deprecated
+
+- `LeadCaptureFormBlock::get_instance()` / `WidgetsLoader::get_instance()`
+  — renamed to `instance()` to match the `LoadableInterface` convention
+  used across this rollout; kept as forwarding aliases since this project
+  follows Semantic Versioning and they're public API.
+
+Note: the removed `LeadCapture_Form` class itself (previously reachable
+via `LeadCapture_Form::get_instance()`) has no equivalent forwarding
+shim — its responsibilities are split across the components above with
+no single coherent replacement to forward to, and it lived in the main
+plugin file rather than a documented public API surface. Same rationale
+as `leadgen-app-form`'s identical migration, its near-identical twin.
+
 ## [1.0.1] - 2026-03-09
 
 ### Changed

@@ -303,7 +303,7 @@ class LeadCaptureFormWidget extends Widget_Base {
 		}
 
 		// Use the existing shortcode function to render the form.
-		$plugin_instance = \LeadCaptureForm\LeadCapture_Form::get_instance();
+		$shortcode_handler = \LeadCaptureForm\ShortcodeHandler::instance();
 
 		$shortcode_atts = array(
 			'form-token' => $form_token,
@@ -319,7 +319,7 @@ class LeadCaptureFormWidget extends Widget_Base {
 		}
 
         // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Shortcode output is escaped internally.
-		echo $plugin_instance->render_shortcode( $shortcode_atts );
+		echo $shortcode_handler->render_shortcode( $shortcode_atts );
 	}
 
 	/**

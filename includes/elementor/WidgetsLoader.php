@@ -19,6 +19,7 @@ defined( 'ABSPATH' ) || exit;
 use Elementor\Plugin;
 use Elementor\Elements_Manager;
 use Elementor\Widgets_Manager;
+use SilverAssist\PluginKernel\Interfaces\LoadableInterface;
 
 /**
  * Elementor Widgets Loader
@@ -29,7 +30,7 @@ use Elementor\Widgets_Manager;
  *
  * @since 1.0.0
  */
-class WidgetsLoader {
+class WidgetsLoader implements LoadableInterface {
 
 	/**
 	 * Single instance of the widgets loader.
@@ -45,11 +46,22 @@ class WidgetsLoader {
 	 * @since 1.0.0
 	 * @return WidgetsLoader The single instance.
 	 */
-	public static function get_instance(): WidgetsLoader {
+	public static function instance(): WidgetsLoader {
 		if ( self::$instance === null ) {
 			self::$instance = new self();
 		}
 		return self::$instance;
+	}
+
+	/**
+	 * Deprecated alias for instance()
+	 *
+	 * @deprecated 1.1.0 Use instance() instead.
+	 * @since 1.0.0
+	 * @return WidgetsLoader
+	 */
+	public static function get_instance(): WidgetsLoader {
+		return self::instance();
 	}
 
 	/**
@@ -58,11 +70,38 @@ class WidgetsLoader {
 	 * @since 1.0.0
 	 */
 	private function __construct() {
-		if ( ! $this->is_elementor_loaded() ) {
-			return;
-		}
+	}
 
+	/**
+	 * Initialize the component
+	 *
+	 * Only called when should_load() (Elementor active) is true.
+	 *
+	 * @since 1.1.0
+	 * @return void
+	 */
+	public function init(): void {
 		$this->init_hooks();
+	}
+
+	/**
+	 * Get the component loading priority
+	 *
+	 * @since 1.1.0
+	 * @return int
+	 */
+	public function get_priority(): int {
+		return 30;
+	}
+
+	/**
+	 * Determine if the component should be loaded
+	 *
+	 * @since 1.1.0
+	 * @return bool
+	 */
+	public function should_load(): bool {
+		return $this->is_elementor_loaded();
 	}
 
 	/**

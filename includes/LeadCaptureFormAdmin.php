@@ -14,6 +14,7 @@
 
 namespace LeadCaptureForm;
 
+use SilverAssist\PluginKernel\Interfaces\LoadableInterface;
 use SilverAssist\SettingsHub\SettingsHub;
 
 // Prevent direct access.
@@ -29,38 +30,65 @@ if (!defined("ABSPATH")) {
  *
  * @since 1.0.0
  */
-class LeadCaptureFormAdmin
+class LeadCaptureFormAdmin implements LoadableInterface
 {
     /**
-     * Plugin updater instance.
+     * Single instance of the admin handler
      *
-     * @since 1.0.0
-     * @var LeadCaptureFormUpdater
+     * @var LeadCaptureFormAdmin|null
      */
-    private LeadCaptureFormUpdater $updater;
+    private static ?LeadCaptureFormAdmin $instance = null;
 
     /**
-     * Initialize admin functionality.
+     * Get the single instance of the admin handler
      *
-     * @since 1.0.0
-     * @param LeadCaptureFormUpdater $updater Updater instance.
+     * @return LeadCaptureFormAdmin
      */
-    public function __construct(LeadCaptureFormUpdater $updater)
+    public static function instance(): LeadCaptureFormAdmin
     {
-        $this->updater = $updater;
-        $this->init_hooks();
+        if (self::$instance === null) {
+            self::$instance = new self();
+        }
+        return self::$instance;
     }
 
     /**
-     * Initialize WordPress hooks.
+     * Private constructor to prevent direct instantiation
+     */
+    private function __construct()
+    {
+    }
+
+    /**
+     * Initialize the component
      *
      * @since 1.0.0
      * @return void
      */
-    private function init_hooks(): void
+    public function init(): void
     {
         \add_action("admin_menu", [$this, "register_with_hub"], 4);
         \add_action("admin_enqueue_scripts", [$this, "enqueue_admin_scripts"]);
+    }
+
+    /**
+     * Get the component loading priority
+     *
+     * @return int
+     */
+    public function get_priority(): int
+    {
+        return 30;
+    }
+
+    /**
+     * Determine if the component should be loaded
+     *
+     * @return bool
+     */
+    public function should_load(): bool
+    {
+        return \is_admin();
     }
 
     /**
@@ -135,8 +163,14 @@ class LeadCaptureFormAdmin
      */
     public function render_update_check_script(): void
     {
+        $updater = Plugin::instance()->get_updater();
+
+        if (!$updater) {
+            return;
+        }
+
         // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Inline JavaScript from wp-github-updater.
-        echo $this->updater->enqueueCheckUpdatesScript();
+        echo $updater->enqueueCheckUpdatesScript();
     }
 
     /**
