@@ -17,6 +17,16 @@ jobs:
                 php-version: [8.2, 8.3, 8.4]
                 wordpress-version: [6.5, 6.6, latest]
 
+        services:
+            mysql:
+                image: mysql:8.0
+                env:
+                    MYSQL_ROOT_PASSWORD: root
+                    MYSQL_DATABASE: leadcapture_form_test
+                ports:
+                    - 3306:3306
+                options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+
         steps:
             - name: Checkout code
               uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
@@ -25,7 +35,7 @@ jobs:
               uses: shivammathur/setup-php@44454db4f0199b8b9685a5d763dc37cbf79108e1 # v2.36.0
               with:
                   php-version: ${{ matrix.php-version }}
-                  extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite
+                  extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, mysqli, pdo_mysql, sqlite, pdo_sqlite
                   coverage: none
 
             - name: Validate composer.json
@@ -45,6 +55,17 @@ jobs:
 
             - name: Run PHPStan
               run: vendor/bin/phpstan analyse --memory-limit=1G
+
+            - name: Install Subversion (required for WordPress Test Suite)
+              run: sudo apt-get update && sudo apt-get install -y subversion
+
+            - name: Install WordPress Test Suite
+              run: bash scripts/install-wp-tests.sh leadcapture_form_test root root 127.0.0.1 ${{ matrix.wordpress-version }} true
+
+            - name: Run PHPUnit
+              env:
+                  WP_TESTS_DIR: /tmp/wordpress-tests-lib
+              run: vendor/bin/phpunit
 
     security-check:
         runs-on: ubuntu-latest

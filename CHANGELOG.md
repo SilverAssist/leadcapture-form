@@ -5,6 +5,18 @@ All notable changes to the LeadCapture Form Plugin will be documented in this fi
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.1] - 2026-08-12
+
+### Added
+
+- **Tests**: Add a PHPUnit test suite (none existed before), following the `WP_UnitTestCase`-based
+  convention used across the rest of the SilverAssist WordPress plugin portfolio — real WordPress test
+  environment via `scripts/install-wp-tests.sh`, not mocks. Covers `Plugin`, `ShortcodeHandler`,
+  `LeadCaptureFormBlock`, `LeadCaptureFormAdmin`, and `WidgetsLoader`: singleton identity, deprecated
+  `get_instance()` forwarding, `get_priority()`/`should_load()` gating, hook registration, and both
+  embed/popup-mode shortcode rendering. Wired into CI (`quality-checks.yml`) with a MySQL service and
+  WordPress Test Suite installation step, reusing the existing `wordpress-version` matrix
+
 ## [1.1.0] - 2026-08-12
 
 ### Changed
