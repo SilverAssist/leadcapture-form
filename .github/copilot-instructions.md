@@ -16,21 +16,31 @@ WordPress plugin for embedding LeadCapture.io forms via shortcode, Gutenberg blo
 ## Differences from Global Standards
 
 - **Double quotes** everywhere (PHP and JS) — not single quotes
-- **Singleton pattern** (`get_instance()`) — not LoadableInterface
 - **No activation/deactivation hooks** — plugin doesn't modify WP internals
-- PSR-4 autoloading via `require_once` in `load_dependencies()`, not a DI container
 - **Vanilla JavaScript** — no jQuery dependency
 
 ## Architecture
 
+Built on `silverassist/wp-plugin-kernel`'s `AbstractPlugin`/`LoadableInterface`
+pattern — singleton access (`instance()`, with a deprecated `get_instance()`
+alias kept for back-compat), priority-ordered component loading, and
+per-component error isolation are inherited from `AbstractPlugin`; `Plugin`
+only declares `get_components()` and `init_hooks()`. Bootstrapped on `init`
+(not `plugins_loaded` — see the docblock on the `add_action` call in the main
+file for why: `WidgetsLoader::should_load()` depends on
+`did_action('elementor/loaded')`, unreliable before every plugin's own
+`plugins_loaded` has run).
+
 ```
-leadcapture-form.php              # Entry point (Singleton)
+leadcapture-form.php              # Entry point — wires Plugin::instance()->init() on "init"
 includes/
-├── LeadCaptureFormBlock.php      # Gutenberg block handler
-├── LeadCaptureFormUpdater.php    # GitHub updater (extends silverassist/wp-github-updater)
-├── LeadCaptureFormAdmin.php      # Admin interface (Settings → LeadCapture)
+├── Plugin.php                    # extends AbstractPlugin — get_components(), init_hooks()
+├── ShortcodeHandler.php          # LoadableInterface component
+├── LeadCaptureFormBlock.php      # Gutenberg block handler, LoadableInterface component
+├── LeadCaptureFormAdmin.php      # Admin interface (Settings → LeadCapture), LoadableInterface component
+├── LeadCaptureFormUpdater.php    # GitHub updater (extends silverassist/wp-github-updater), constructed directly in Plugin::init_hooks()
 └── elementor/
-    ├── WidgetsLoader.php         # Conditional loader (only when Elementor active)
+    ├── WidgetsLoader.php         # LoadableInterface component — should_load() gates on Elementor
     └── widgets/
         └── LeadCaptureFormWidget.php # Elementor widget
 blocks/leadcapture-form/          # Gutenberg block assets (block.json, block.js, editor.css)

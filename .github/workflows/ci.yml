@@ -1,0 +1,127 @@
+name: CI
+permissions:
+  contents: read
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  quality-checks-82:
+    name: Quality Checks (PHP 8.2)
+    uses: SilverAssist/wp-coding-standards/.github/workflows/quality-checks.yml@v1
+    with:
+      php-version: "8.2"
+      skip-wp-setup: false
+      upload-coverage: false
+
+  quality-checks-83:
+    name: Quality Checks (PHP 8.3)
+    uses: SilverAssist/wp-coding-standards/.github/workflows/quality-checks.yml@v1
+    with:
+      php-version: "8.3"
+      skip-wp-setup: false
+      upload-coverage: false
+
+  quality-checks-84:
+    name: Quality Checks (PHP 8.4)
+    uses: SilverAssist/wp-coding-standards/.github/workflows/quality-checks.yml@v1
+    with:
+      php-version: "8.4"
+      skip-wp-setup: false
+      upload-coverage: false
+
+  security-scan:
+    name: Security Scan
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.2"
+          extensions: mbstring, intl
+          coverage: none
+      - run: composer install --no-interaction --no-progress --optimize-autoloader
+      - run: composer audit
+
+  security-check:
+    name: Security Check (repo-specific patterns)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+
+      - name: Run security check
+        run: |
+          echo "🔍 Checking for eval() usage in PHP code..."
+          EVAL_FILES=$(find . -name "*.php" -not -path "./vendor/*" -exec grep -l "eval(" {} \; 2>/dev/null || true)
+          if [ -n "$EVAL_FILES" ]; then
+            echo "❌ eval() usage found in PHP files - security risk!"
+            echo "$EVAL_FILES"
+            exit 1
+          else
+            echo "✅ No eval() found in PHP code"
+          fi
+
+          echo "🔍 Checking for direct \$_GET usage in PHP code..."
+          GET_FILES=$(find . -name "*.php" -not -path "./vendor/*" -exec grep -l "\$_GET\[" {} \; 2>/dev/null || true)
+          if [ -n "$GET_FILES" ]; then
+            echo "⚠️ Direct \$_GET usage found - consider using sanitize_text_field()"
+            echo "$GET_FILES"
+          else
+            echo "✅ No direct \$_GET usage in PHP code"
+          fi
+
+          echo "🔍 Checking for direct \$_POST usage in PHP code..."
+          POST_FILES=$(find . -name "*.php" -not -path "./vendor/*" -exec grep -l "\$_POST\[" {} \; 2>/dev/null || true)
+          if [ -n "$POST_FILES" ]; then
+            echo "⚠️ Direct \$_POST usage found - consider using sanitize_text_field()"
+            echo "$POST_FILES"
+          else
+            echo "✅ No direct \$_POST usage in PHP code"
+          fi
+
+          echo "🔍 Checking for remote file_get_contents usage in PHP code..."
+          HTTP_FILES=$(find . -name "*.php" -not -path "./vendor/*" -exec grep -l "file_get_contents.*http" {} \; 2>/dev/null || true)
+          if [ -n "$HTTP_FILES" ]; then
+            echo "❌ Remote file_get_contents found - potential SSRF risk!"
+            echo "$HTTP_FILES"
+            exit 1
+          else
+            echo "✅ No remote file_get_contents found in PHP code"
+          fi
+
+  compatibility:
+    name: WordPress Compatibility
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        wordpress-version: ["6.5", "6.6", "6.7", "latest"]
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: wordpress_test
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
+    steps:
+      - uses: actions/checkout@v5
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.2"
+          extensions: mbstring, intl, mysql, pdo_mysql
+          coverage: none
+      - run: composer install --no-interaction --no-progress --optimize-autoloader
+      - name: Install Subversion (required for WordPress Test Suite)
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq subversion
+      - run: bash scripts/install-wp-tests.sh wordpress_test root 'root' 127.0.0.1 ${{ matrix.wordpress-version }} false
+      - run: vendor/bin/phpunit
