@@ -6,8 +6,8 @@
 # It downloads WordPress core and creates a test database.
 #
 # @package LeadCaptureForm
-# @since 1.1.0
-# @version 1.1.0
+# @since 1.1.1
+# @version 1.1.1
 #
 # Usage:
 #   bash scripts/install-wp-tests.sh <db-name> <db-user> <db-pass> [db-host] [wp-version] [skip-database-creation]
@@ -128,7 +128,7 @@ install_test_suite() {
 		svn export --quiet --ignore-externals https://develop.svn.wordpress.org/${WP_TESTS_TAG}/tests/phpunit/data/ $WP_TESTS_DIR/data
 	fi
 
-	if [ ! -f wp-tests-config.php ]; then
+	if [ ! -f "$WP_TESTS_DIR"/wp-tests-config.php ]; then
 		download https://develop.svn.wordpress.org/${WP_TESTS_TAG}/wp-tests-config-sample.php "$WP_TESTS_DIR"/wp-tests-config.php
 		# remove all forward slashes in the end
 		WP_CORE_DIR=$(echo $WP_CORE_DIR | sed "s:/\+$::")

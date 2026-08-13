@@ -73,16 +73,34 @@ class PluginTest extends WP_UnitTestCase
     /**
      * Test that init() is idempotent (guarded by AbstractPlugin).
      *
+     * Asserts the actual guard flag AbstractPlugin::init() checks, rather
+     * than just calling init() twice and asserting true — a passing test
+     * here means the guard genuinely prevented a second run, not merely
+     * that no exception was thrown.
+     *
      * @return void
      */
     public function test_init_is_idempotent(): void
     {
         $plugin = Plugin::instance();
-
-        $plugin->init();
         $plugin->init();
 
-        $this->assertTrue(true);
+        $initialized_property = new \ReflectionProperty(\SilverAssist\PluginKernel\AbstractPlugin::class, 'initialized');
+        $initialized_property->setAccessible(true);
+
+        $this->assertTrue(
+            $initialized_property->getValue($plugin),
+            'First init() call should set the AbstractPlugin guard flag'
+        );
+
+        // A second call must be a no-op: the guard flag must not toggle
+        // or otherwise change as a side effect of re-entering init().
+        $plugin->init();
+
+        $this->assertTrue(
+            $initialized_property->getValue($plugin),
+            'Second init() call should leave the guard flag unchanged'
+        );
     }
 
     /**
