@@ -3,7 +3,7 @@
  * Plugin Name: LeadCapture Form
  * Plugin URI: https://github.com/SilverAssist/leadcapture-form
  * Description: WordPress plugin that embeds LeadCapture.io forms via shortcode, Gutenberg block, and Elementor widget with lazy loading and popup trigger support.
- * Version: 1.1.0
+ * Version: 1.1.1
  * Author: Silver Assist
  * Author URI: http://silverassist.com/
  * Text Domain: leadcapture-form
@@ -14,7 +14,7 @@
  * License URI: https://polyformproject.org/licenses/noncommercial/1.0.0/
  *
  * @package LeadCaptureForm
- * @version 1.1.0
+ * @version 1.1.1
  * @author Silver Assist
  */
 
@@ -26,7 +26,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 // Define plugin constants.
-define( 'LEADCAPTURE_FORM_VERSION', '1.1.0' );
+define( 'LEADCAPTURE_FORM_VERSION', '1.1.1' );
 define( 'LEADCAPTURE_FORM_FILE', __FILE__ );
 define( 'LEADCAPTURE_FORM_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
 define( 'LEADCAPTURE_FORM_PLUGIN_PATH', plugin_dir_path( __FILE__ ) );
