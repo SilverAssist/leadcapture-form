@@ -50,7 +50,10 @@
     "test": "phpunit",
     "phpcs": "phpcs",
     "phpcbf": "phpcbf",
-    "lint": "find . -name '*.php' -not -path './vendor/*' -exec php -l {} \\;"
+    "lint": "find . -name '*.php' -not -path './vendor/*' -exec php -l {} \\;",
+    "setup-hooks": "git config core.hooksPath .githooks",
+    "post-install-cmd": "@setup-hooks",
+    "post-update-cmd": "@setup-hooks"
   },
   "support": {
     "issues": "https://github.com/SilverAssist/leadcapture-form/issues",
